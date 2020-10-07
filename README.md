@@ -4,7 +4,7 @@ C# .Net Core 3.1 Console App
 
 Takes inputs from user to locate Rovers on Mars. 
 
-1. tries until finds valid current location and direction for rover.
+1. Tries until finds valid current location and direction for rover.
 
 2. Then tries until valid NASA directives to move rover.
 
