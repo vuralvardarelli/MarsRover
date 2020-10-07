@@ -15,3 +15,6 @@ If list is not empty and has at least one rover, starts moving.
 Then outputs last location of every rover inside the list.
 
 Ps: User can always type 'exit' to close the application.
+
+![mars-rover](https://user-images.githubusercontent.com/72281304/95395507-78bceb00-0907-11eb-9fc0-cba04538cef7.JPG)
+
