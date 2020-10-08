@@ -1,11 +1,12 @@
-using MarsRover.Utils;
+﻿using MarsRover.Utils;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Xunit;
 
 namespace MarsRoverTests
 {
-    public class MethodTests
+    public class CheckerTests
     {
         [Fact]
         public void CheckInput_InputIsNotDirective_ReturnFalse()
@@ -52,18 +53,6 @@ namespace MarsRoverTests
         public void CheckIfUserWantsToExit_InputIsExit_ReturnTrue()
         {
             Assert.True(Checkers.CheckIfUserWantsToExit("exit"));
-        }
-
-        [Fact]
-        public void ParseLocationForRover_InputIsStringWithBlanks_ReturnListString()
-        {
-            Assert.Equal(typeof(List<string>), Parsers.ParseLocationForRover("1 2 3 4 M N").GetType());
-        }
-
-        [Fact]
-        public void ParseDirectivesForRover_InputIsString_ReturnCharArray()
-        {
-            Assert.Equal(typeof(char[]), Parsers.ParseDirectivesForRover("12SXJKH").GetType());
         }
     }
 }
