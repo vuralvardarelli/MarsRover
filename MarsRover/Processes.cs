@@ -95,6 +95,8 @@ namespace MarsRover
                     Direction = locationValues[2],
                     Directives = directives
                 });
+
+                Console.WriteLine($"** Rover added at '{Convert.ToInt32(locationValues[0])} {Convert.ToInt32(locationValues[1])} {locationValues[2]}' with directives : '{directives}'");
             }
         }
 
@@ -135,19 +137,26 @@ namespace MarsRover
         private void GetLastLocations()
         {
             if (_rovers.Count > 0)
+            {
+                Console.WriteLine("\nOutput:\n");
+
+                int i = 1;
+
                 foreach (var rover in _rovers)
                 {
-                    if(rover.CoordinateX<0 || rover.CoordinateY < 0)
+                    if (rover.CoordinateX < 0 || rover.CoordinateY < 0)
                     {
-                        Console.WriteLine($"{rover.CoordinateX} {rover.CoordinateY} {rover.Direction}  <-- Probably crashed.. Not enough information on documentation.");
+                        Console.WriteLine($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}  <-- Probably crashed.. Not enough information on documentation.");
                     }
                     else
                     {
-                        Console.WriteLine($"{rover.CoordinateX} {rover.CoordinateY} {rover.Direction}");
+                        Console.WriteLine($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}");
                     }
 
-                    
+                    i++;
                 }
+            }
+
         }
 
         /// <summary>
