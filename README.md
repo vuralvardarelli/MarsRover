@@ -16,5 +16,4 @@ Then outputs last location of every rover inside the list.
 
 Ps: User can always type 'exit' to close the application.
 
-![mars-rover](https://user-images.githubusercontent.com/72281304/95395507-78bceb00-0907-11eb-9fc0-cba04538cef7.JPG)
-
+![mars-rover](https://user-images.githubusercontent.com/72281304/95422783-9bbbbf00-0948-11eb-8ef9-82eb45627e57.JPG)
