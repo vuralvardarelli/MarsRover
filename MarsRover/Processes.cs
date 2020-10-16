@@ -14,19 +14,16 @@ namespace MarsRover
     {
         private IConsole _console;
 
-        List<Rover> _rovers;
+        private List<Rover> _rovers;
 
         //if user wants to start moving rovers
         private bool _startReceived = false;
-
-        //if user wants to exit application
-        private bool _exitReceived = false;
 
         public Processes(ServiceProvider serviceProvider)
         {
             _rovers = new List<Rover>();
             _console = serviceProvider.GetRequiredService<IConsole>();
-            
+
         }
 
         public void Init()
@@ -48,7 +45,8 @@ namespace MarsRover
         /// </summary>
         private void AddRovers()
         {
-            //bool _exitReceived = false;
+            //if user wants to exit application
+            bool exitReceived = false;
 
             while (!_startReceived)
             {
@@ -57,20 +55,19 @@ namespace MarsRover
                 //try until get first input is valid and location for the rover
                 while (!Checkers.CheckInput(location, InputType.LOCATION))
                 {
-                    location = Console.ReadLine();
-                    //location = _console.ReadLine();
+                    location = _console.ReadLine();
 
                     _startReceived = Checkers.CheckIfUserWantsToStart(location);
-                    _exitReceived = Checkers.CheckIfUserWantsToExit(location);
+                    exitReceived = Checkers.CheckIfUserWantsToExit(location);
 
-                    if (_startReceived || _exitReceived)
+                    if (_startReceived || exitReceived)
                         break;
                 }
 
                 if (_startReceived)
                     continue;
 
-                if (_exitReceived)
+                if (exitReceived)
                     ExitApplication();
 
                 //first input values to add rover's properties
@@ -83,20 +80,19 @@ namespace MarsRover
                 while (!Checkers.CheckInput(directives, InputType.DIRECTIVE))
                 {
                     //second input value to add rover's properties
-                    directives = Console.ReadLine();
-                    //directives = _console.ReadLine();
+                    directives = _console.ReadLine();
 
                     _startReceived = Checkers.CheckIfUserWantsToStart(directives);
-                    _exitReceived = Checkers.CheckIfUserWantsToExit(directives);
+                    exitReceived = Checkers.CheckIfUserWantsToExit(directives);
 
-                    if (_startReceived || _exitReceived)
+                    if (_startReceived || exitReceived)
                         break;
                 }
 
                 if (_startReceived)
                     continue;
 
-                if (_exitReceived)
+                if (exitReceived)
                     ExitApplication();
 
                 _rovers.Add(new Rover()
@@ -107,8 +103,7 @@ namespace MarsRover
                     Directives = directives
                 });
 
-                Console.WriteLine($"** Rover added at '{Convert.ToInt32(locationValues[0])} {Convert.ToInt32(locationValues[1])} {locationValues[2]}' with directives : '{directives}'");
-                //_console.WritelineToConsole($"** Rover added at '{Convert.ToInt32(locationValues[0])} {Convert.ToInt32(locationValues[1])} {locationValues[2]}' with directives : '{directives}'");
+                _console.WritelineToConsole($"** Rover added at '{Convert.ToInt32(locationValues[0])} {Convert.ToInt32(locationValues[1])} {locationValues[2]}' with directives : '{directives}'");
             }
         }
 
@@ -135,16 +130,16 @@ namespace MarsRover
             }
             else //if list has no valid rover.
             {
-                Console.WriteLine("You have no rovers with valid values. Please hit 'Enter' to start again.");
-                //_console.WritelineToConsole("You have no rovers with valid values. Please hit 'Enter' to start again.");
-                
-                while (Console.ReadKey().Key != ConsoleKey.Enter)
-                { }
-                //while (_console.ReadKey().Key != ConsoleKey.Enter)
-                //{ }
 
-                Console.Clear();
-                //_console.ClearConsole();
+                _console.WritelineToConsole("You have no rovers with valid values. Please hit 'Enter' to start again.");
+
+                //while (Console.ReadKey().Key != ConsoleKey.Enter)
+                //{ }
+                while (_console.ReadKey().Key != ConsoleKey.Enter)
+                { }
+
+
+                _console.ClearConsole();
                 _startReceived = false;
                 Init();
             }
@@ -157,8 +152,7 @@ namespace MarsRover
         {
             if (_rovers.Count > 0)
             {
-                Console.WriteLine("\nOutput:\n");
-                //_console.WritelineToConsole("\nOutput:\n");
+                _console.WritelineToConsole("\nOutput:\n");
 
                 int i = 1;
 
@@ -166,13 +160,11 @@ namespace MarsRover
                 {
                     if (rover.CoordinateX < 0 || rover.CoordinateY < 0)
                     {
-                        Console.WriteLine($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}  <-- Probably crashed.. Not enough information on documentation.");
-                        //_console.WritelineToConsole($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}  <-- Probably crashed.. Not enough information on documentation.");
+                        _console.WritelineToConsole($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}  <-- Probably crashed.. Not enough information on documentation.");
                     }
                     else
                     {
-                        Console.WriteLine($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}");
-                        //_console.WritelineToConsole($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}");
+                        _console.WritelineToConsole($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}");
                     }
 
                     i++;
@@ -252,13 +244,9 @@ namespace MarsRover
         /// </summary>
         private void ExitApplication()
         {
-            //_console.WritelineToConsole("You are not exiting from application. Press any key..");
-            //_console.ReadKey();
-            //_console.ExitConsole();
-
-            Console.WriteLine("You are not exiting from application. Press any key..");
-            Console.ReadKey();
-            Environment.Exit(0);
+            _console.WritelineToConsole("You are not exiting from application. Press any key..");
+            _console.ReadKey();
+            _console.ExitConsole();
         }
 
 
