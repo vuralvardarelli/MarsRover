@@ -27,7 +27,7 @@ namespace MarsRover.Utils
         {
             try
             {
-                
+
                 if (desiredInputType == InputType.DIRECTIVE) //validates while system awaits for valid directives input
                 {
                     List<char> directives = Parsers.ParseDirectivesForRover(input).Distinct().ToList();
@@ -57,6 +57,15 @@ namespace MarsRover.Utils
                     bool isValidDirection = _directions.Any(d => d == values[2]);
 
                     if (!isValidDirection) return false;
+
+                    return true;
+                }
+                else if (desiredInputType == InputType.MAX_DISTANCE) //validates while system awaits for valid max X distance for Plateau
+                {
+                    int maxDistance = Convert.ToInt32(input);
+
+                    if (maxDistance < 0)
+                        return false;
 
                     return true;
                 }

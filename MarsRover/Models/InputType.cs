@@ -10,6 +10,7 @@ namespace MarsRover.Models
     public enum InputType
     {
         LOCATION,
-        DIRECTIVE
+        DIRECTIVE,
+        MAX_DISTANCE
     }
 }

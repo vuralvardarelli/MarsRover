@@ -9,6 +9,18 @@ namespace MarsRoverTests
     public class CheckerTests
     {
         [Fact]
+        public void CheckInput_InputIsNotDistance_ReturnFalse()
+        {
+            Assert.False(Checkers.CheckInput("-3", MarsRover.Models.InputType.MAX_DISTANCE));
+        }
+
+        [Fact]
+        public void CheckInput_InputIsDistance_ReturnTrue()
+        {
+            Assert.True(Checkers.CheckInput("2", MarsRover.Models.InputType.MAX_DISTANCE));
+        }
+
+        [Fact]
         public void CheckInput_InputIsNotDirective_ReturnFalse()
         {
             Assert.False(Checkers.CheckInput("kjhdsakck", MarsRover.Models.InputType.DIRECTIVE));
