@@ -56,9 +56,8 @@ namespace MarsRover
                 distanceStr = _console.ReadLine();
 
                 if (!Checkers.CheckInput(distanceStr, InputType.MAX_DISTANCE))
-                {
                     _console.WritelineToConsole("\n**Wrong distance input,please try again.\n");
-                }
+
             }
 
             List<int> platVals = Parsers.ParseDistancesForPlateau(distanceStr);
@@ -90,7 +89,7 @@ namespace MarsRover
                 _console.WritelineToConsole($"{_rovers.Count + 1}.Rover's Starting Location Coordinates :\n");
 
                 //try until get first input is valid and location for the rover
-                while (!Checkers.CheckInput(location, InputType.LOCATION,_plateau))
+                while (!Checkers.CheckInput(location, InputType.LOCATION, _plateau))
                 {
                     location = _console.ReadLine();
 
@@ -99,6 +98,9 @@ namespace MarsRover
 
                     if (_startReceived || _exitReceived)
                         break;
+
+                    if (!Checkers.CheckInput(location, InputType.LOCATION, _plateau))
+                        _console.WritelineToConsole("\n**Wrong/OutOfBoundries location input,please try again.\n");
                 }
 
                 if (_startReceived)
@@ -127,6 +129,9 @@ namespace MarsRover
 
                     if (_startReceived || _exitReceived)
                         break;
+
+                    if(!Checkers.CheckInput(directives, InputType.DIRECTIVE))
+                        _console.WritelineToConsole("\n**Wrong directive input,please try again.\n");
                 }
 
                 if (_startReceived)
@@ -198,9 +203,9 @@ namespace MarsRover
 
                 foreach (var rover in _rovers)
                 {
-                    if (rover.CoordinateX < 0 || rover.CoordinateY < 0)
+                    if (rover.CoordinateX < 0 || rover.CoordinateY < 0 || rover.CoordinateX > _plateau.DistanceX ||rover.CoordinateY > _plateau.DistanceY)
                     {
-                        _console.WritelineToConsole($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}  <-- Probably crashed.. Not enough information on documentation.");
+                        _console.WritelineToConsole($"**OUT OF BOUNDRIES** {i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}");
                     }
                     else
                     {
