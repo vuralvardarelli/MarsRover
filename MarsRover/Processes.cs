@@ -48,6 +48,8 @@ namespace MarsRover
         /// </summary>
         private void AddRovers()
         {
+            //bool _exitReceived = false;
+
             while (!_startReceived)
             {
                 string location = "";
