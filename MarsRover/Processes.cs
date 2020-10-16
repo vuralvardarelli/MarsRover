@@ -18,6 +18,8 @@ namespace MarsRover
 
         private Plateau _plateau;
 
+        private List<Rover> _crushedRovers;
+
         //if user wants to start moving rovers
         private bool _startReceived = false;
 
@@ -26,18 +28,21 @@ namespace MarsRover
             _rovers = new List<Rover>();
             _plateau = new Plateau();
             _console = console;
+            _crushedRovers = new List<Rover>();
 
         }
 
-        public void Init()
+        public string Init()
         {
             GetPlateau();
 
             AddRovers();
 
-            MoveRovers();
+            string message = MoveRovers();
 
             GetLastLocations();
+
+            return message;
 
         }
 
@@ -130,7 +135,7 @@ namespace MarsRover
                     if (_startReceived || exitReceived)
                         break;
 
-                    if(!Checkers.CheckInput(directives, InputType.DIRECTIVE))
+                    if (!Checkers.CheckInput(directives, InputType.DIRECTIVE))
                         _console.WritelineToConsole("\n**Wrong directive input,please try again.\n");
                 }
 
@@ -156,10 +161,11 @@ namespace MarsRover
         /// If list has rovers inside , starts to move them 1 by 1,
         /// else clears console and lets user start again.
         /// </summary>
-        private void MoveRovers()
+        private string MoveRovers()
         {
             if (_rovers.Count > 0) //if list has valid rover/rovers
             {
+                bool outOfBorder = true;
                 //move rovers sequentially
                 foreach (var rover in _rovers)
                 {
@@ -168,10 +174,18 @@ namespace MarsRover
 
                     foreach (var directive in directives)
                     {
-                        ChangeRoverValues(rover, directive);
+                        outOfBorder = ChangeRoverValues(rover, directive);
+                        if (!outOfBorder)
+                            break;
                     }
 
+                    if (!outOfBorder)
+                        continue;
+
+
                 }
+
+                return "";
             }
             else //if list has no valid rover.
             {
@@ -187,6 +201,8 @@ namespace MarsRover
                 _console.ClearConsole();
                 _startReceived = false;
                 Init();
+                return "";
+
             }
         }
 
@@ -203,7 +219,7 @@ namespace MarsRover
 
                 foreach (var rover in _rovers)
                 {
-                    if (rover.CoordinateX < 0 || rover.CoordinateY < 0 || rover.CoordinateX > _plateau.DistanceX ||rover.CoordinateY > _plateau.DistanceY)
+                    if (rover.CoordinateX < 0 || rover.CoordinateY < 0 || rover.CoordinateX > _plateau.DistanceX || rover.CoordinateY > _plateau.DistanceY)
                     {
                         _console.WritelineToConsole($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction} **OUT OF BOUNDRIES (Max Values : {_plateau.DistanceX} {_plateau.DistanceY})**");
                     }
@@ -223,8 +239,10 @@ namespace MarsRover
         /// </summary>
         /// <param name="rover">current rover to move</param>
         /// <param name="directive">tells rover where to go</param>
-        private void ChangeRoverValues(Rover rover, char directive)
+        private bool ChangeRoverValues(Rover rover, char directive)
         {
+            bool outOfBorder = true;
+
             if (directive == 'L')
             {
                 if (rover.Direction == "N")
@@ -265,23 +283,107 @@ namespace MarsRover
             }
             else if (directive == 'M')
             {
+                foreach (var crushed in _crushedRovers)
+                {
+                    if (rover.CoordinateX == crushed.CoordinateX && rover.CoordinateY == crushed.CoordinateY && rover.Direction == crushed.Direction)
+                        return false;
+                }
+
                 if (rover.Direction == "N")
                 {
                     rover.CoordinateY++;
+
+                    outOfBorder = CheckLastYLocation(rover, true);
                 }
                 else if (rover.Direction == "W")
                 {
                     rover.CoordinateX--;
+
+                    outOfBorder = CheckLastXLocation(rover, false);
                 }
                 else if (rover.Direction == "E")
                 {
                     rover.CoordinateX++;
+
+                    outOfBorder = CheckLastXLocation(rover, true);
                 }
                 else if (rover.Direction == "S")
                 {
                     rover.CoordinateY--;
+
+                    outOfBorder = CheckLastYLocation(rover, false);
                 }
+
+                if (!outOfBorder)
+                    return false;
+
             }
+
+            return true;
+        }
+
+        private bool CheckLastYLocation(Rover rover, bool isPlus)
+        {
+            if (rover.CoordinateY > _plateau.DistanceY)
+            {
+                if (isPlus)
+                {
+                    _console.WritelineToConsole($"Rover got out of border after Y coordinate : {rover.CoordinateY - 1}");
+                    _crushedRovers.Add(new Rover()
+                    {
+                        Direction = rover.Direction,
+                        CoordinateX = rover.CoordinateX,
+                        CoordinateY = rover.CoordinateY - 1
+                    });
+                }
+                else
+                {
+                    _console.WritelineToConsole($"Rover got out of border after Y coordinate : {rover.CoordinateY + 1}");
+                    _crushedRovers.Add(new Rover()
+                    {
+                        Direction = rover.Direction,
+                        CoordinateX = rover.CoordinateX,
+                        CoordinateY = rover.CoordinateY + 1
+                    });
+                }
+
+                return false;
+
+            }
+
+            return true;
+        }
+
+        private bool CheckLastXLocation(Rover rover, bool isPlus)
+        {
+            if (rover.CoordinateX > _plateau.DistanceX)
+            {
+                if (isPlus)
+                {
+                    _console.WritelineToConsole($"Rover got out of border after X coordinate : {rover.CoordinateX - 1}");
+                    _crushedRovers.Add(new Rover()
+                    {
+                        Direction = rover.Direction,
+                        CoordinateX = rover.CoordinateX - 1,
+                        CoordinateY = rover.CoordinateY
+                    });
+
+                }
+                else
+                {
+                    _console.WritelineToConsole($"Rover got out of border after X coordinate : {rover.CoordinateX + 1}");
+                    _crushedRovers.Add(new Rover()
+                    {
+                        Direction = rover.Direction,
+                        CoordinateX = rover.CoordinateX + 1,
+                        CoordinateY = rover.CoordinateY
+                    });
+                }
+                return false;
+
+            }
+
+            return true;
         }
 
         /// <summary>

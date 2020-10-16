@@ -25,7 +25,10 @@ namespace MarsRover
             Processes processes = new Processes(console);
 
             //start process
-            processes.Init();
+            string message= processes.Init();
+
+            console.WritelineToConsole($"\n{message}\n");
+
 
             console.WritelineToConsole("\nPress 'Enter' to exit the process..."); 
 
