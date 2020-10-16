@@ -9,8 +9,8 @@ namespace MarsRover.Models
     /// </summary>
     public class Plateau
     {
-        public int DistanceX { get; set; }
+        public int DistanceX { get; set; } = 0;
 
-        public int DistanceY { get; set; }
+        public int DistanceY { get; set; } = 0;
     }
 }

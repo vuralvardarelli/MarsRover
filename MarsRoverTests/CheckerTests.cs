@@ -11,13 +11,13 @@ namespace MarsRoverTests
         [Fact]
         public void CheckInput_InputIsNotDistance_ReturnFalse()
         {
-            Assert.False(Checkers.CheckInput("-3", MarsRover.Models.InputType.MAX_DISTANCE));
+            Assert.False(Checkers.CheckInput("-3 5", MarsRover.Models.InputType.MAX_DISTANCE));
         }
 
         [Fact]
         public void CheckInput_InputIsDistance_ReturnTrue()
         {
-            Assert.True(Checkers.CheckInput("2", MarsRover.Models.InputType.MAX_DISTANCE));
+            Assert.True(Checkers.CheckInput("2 4", MarsRover.Models.InputType.MAX_DISTANCE));
         }
 
         [Fact]
@@ -35,13 +35,13 @@ namespace MarsRoverTests
         [Fact]
         public void CheckInput_InputIsNotLocation_ReturnFalse()
         {
-            Assert.False(Checkers.CheckInput("kjhdsakck", MarsRover.Models.InputType.LOCATION));
+            Assert.False(Checkers.CheckInput("kjhdsakck", MarsRover.Models.InputType.LOCATION,new MarsRover.Models.Plateau() {DistanceX = -1,DistanceY = -1 }));
         }
 
         [Fact]
         public void CheckInput_InputIsLocation_ReturnTrue()
         {
-            Assert.True(Checkers.CheckInput("1 2 N", MarsRover.Models.InputType.LOCATION));
+            Assert.True(Checkers.CheckInput("1 2 N", MarsRover.Models.InputType.LOCATION, new MarsRover.Models.Plateau() { DistanceX = 3, DistanceY = 3 }));
         }
 
         [Fact]

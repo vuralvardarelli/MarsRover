@@ -17,13 +17,17 @@ namespace MarsRover.Utils
         //NASA directives
         private static char[] _moves = new char[] { 'L', 'M', 'R' };
 
+
+
+
         /// <summary>
         /// To check if input is valid for desired type
         /// </summary>
         /// <param name="input">input coming from user.</param>
         /// <param name="desiredInputType">which type of input do we want in input</param>
+        /// <param name="plateau">if checking for rover location *optional*</param>
         /// <returns>returns boolean if input is valid and desired type</returns>
-        public static bool CheckInput(string input, InputType desiredInputType)
+        public static bool CheckInput(string input, InputType desiredInputType, Plateau plateau = null)
         {
             try
             {
@@ -51,8 +55,8 @@ namespace MarsRover.Utils
                     int coordinateX = Convert.ToInt32(values[0]);
                     int coordinateY = Convert.ToInt32(values[1]);
 
-                    if (coordinateX < 0) return false;
-                    if (coordinateY < 0) return false;
+                    if (coordinateX < 0 || coordinateY < 0 || coordinateX > plateau.DistanceX || coordinateY > plateau.DistanceY)
+                        return false;
 
                     bool isValidDirection = _directions.Any(d => d == values[2]);
 
@@ -62,10 +66,12 @@ namespace MarsRover.Utils
                 }
                 else if (desiredInputType == InputType.MAX_DISTANCE) //validates while system awaits for valid max X distance for Plateau
                 {
-                    int maxDistance = Convert.ToInt32(input);
+                    string[] distanceValuesAsStr = input.Split(" ");
 
-                    if (maxDistance < 0)
+                    if (Convert.ToInt32(distanceValuesAsStr[0]) < 0 || Convert.ToInt32(distanceValuesAsStr[1]) < 0 ||distanceValuesAsStr.Length>2)
+                    {
                         return false;
+                    }
 
                     return true;
                 }
@@ -109,14 +115,15 @@ namespace MarsRover.Utils
         /// <param name="rover">current rover</param>
         /// <param name="plateau">plateau with max distance values</param>
         /// <returns>true if valid, false if not.</returns>
-        public static bool CheckIfRoverOutOfBoundries(Rover rover,Plateau plateau)
+        public static bool CheckIfRoverOutOfBoundries(Rover rover, Plateau plateau)
         {
-            if(rover.CoordinateX < 0 || rover.CoordinateY < 0 || rover.CoordinateX > plateau.DistanceX || rover.CoordinateY > plateau.DistanceY)
+            if (rover.CoordinateX < 0 || rover.CoordinateY < 0 || rover.CoordinateX > plateau.DistanceX || rover.CoordinateY > plateau.DistanceY)
             {
                 return false;
             }
 
             return true;
         }
+
     }
 }

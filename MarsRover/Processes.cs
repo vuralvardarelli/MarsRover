@@ -16,6 +16,8 @@ namespace MarsRover
 
         private List<Rover> _rovers;
 
+        private Plateau _plateau;
+
         //if user wants to start moving rovers
         private bool _startReceived = false;
 
@@ -25,6 +27,7 @@ namespace MarsRover
         public Processes(IConsole console)
         {
             _rovers = new List<Rover>();
+            _plateau = new Plateau();
             _console = console;
 
         }
@@ -43,6 +46,27 @@ namespace MarsRover
 
         private void GetPlateau()
         {
+            _console.WritelineToConsole("\n");
+            _console.WritelineToConsole($"Plateau Max Distances :\n");
+
+            string distanceStr = "";
+
+            while (!Checkers.CheckInput(distanceStr, InputType.MAX_DISTANCE))
+            {
+                distanceStr = _console.ReadLine();
+
+                if (!Checkers.CheckInput(distanceStr, InputType.MAX_DISTANCE))
+                {
+                    _console.WritelineToConsole("\n**Wrong distance input,please try again.\n");
+                }
+            }
+
+            List<int> platVals = Parsers.ParseDistancesForPlateau(distanceStr);
+
+            _plateau.DistanceX = platVals[0];
+            _plateau.DistanceY = platVals[1];
+
+            _console.WritelineToConsole("\nPlateau max distance values are set!");
 
         }
 
@@ -57,16 +81,16 @@ namespace MarsRover
             _console.WritelineToConsole("\n");
             _console.WritelineToConsole("** If you want to move Rovers , please type 'start' as a new input value and hit 'Enter'.");
             _console.WritelineToConsole("** If you want to close application , please type 'exit' as a new input value and hit 'Enter'.\n");
-            
+
 
             while (!_startReceived)
             {
                 string location = "";
 
-                _console.WritelineToConsole($"{_rovers.Count+1}.Rover's Starting Location Coordinates :\n");
+                _console.WritelineToConsole($"{_rovers.Count + 1}.Rover's Starting Location Coordinates :\n");
 
                 //try until get first input is valid and location for the rover
-                while (!Checkers.CheckInput(location, InputType.LOCATION))
+                while (!Checkers.CheckInput(location, InputType.LOCATION,_plateau))
                 {
                     location = _console.ReadLine();
 
@@ -90,7 +114,7 @@ namespace MarsRover
                 string directives = "";
 
                 _console.WritelineToConsole($"\n" +
-                    $"{_rovers.Count+1}.Rover's Directives :\n");
+                    $"{_rovers.Count + 1}.Rover's Directives :\n");
 
                 //try until get second input is valid and directives for the rover
                 while (!Checkers.CheckInput(directives, InputType.DIRECTIVE))
