@@ -28,12 +28,18 @@ namespace MarsRover
 
         public void Init()
         {
+            GetPlateau();
 
             AddRovers();
 
             MoveRovers();
 
             GetLastLocations();
+
+        }
+
+        private void GetPlateau()
+        {
 
         }
 
