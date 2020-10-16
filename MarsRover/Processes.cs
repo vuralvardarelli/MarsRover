@@ -197,7 +197,7 @@ namespace MarsRover
         {
             if (_rovers.Count > 0)
             {
-                _console.WritelineToConsole("\nOutput:\n");
+                _console.WritelineToConsole("\nOUTPUT:\n");
 
                 int i = 1;
 
