@@ -21,9 +21,6 @@ namespace MarsRover
         //if user wants to start moving rovers
         private bool _startReceived = false;
 
-        //if user wants to exit application
-        private bool _exitReceived = false;
-
         public Processes(IConsole console)
         {
             _rovers = new List<Rover>();
@@ -81,6 +78,9 @@ namespace MarsRover
             _console.WritelineToConsole("** If you want to move Rovers , please type 'start' as a new input value and hit 'Enter'.");
             _console.WritelineToConsole("** If you want to close application , please type 'exit' as a new input value and hit 'Enter'.\n");
 
+            //if user wants to exit application
+            bool exitReceived = false;
+
 
             while (!_startReceived)
             {
@@ -94,9 +94,9 @@ namespace MarsRover
                     location = _console.ReadLine();
 
                     _startReceived = Checkers.CheckIfUserWantsToStart(location);
-                    _exitReceived = Checkers.CheckIfUserWantsToExit(location);
+                    exitReceived = Checkers.CheckIfUserWantsToExit(location);
 
-                    if (_startReceived || _exitReceived)
+                    if (_startReceived || exitReceived)
                         break;
 
                     if (!Checkers.CheckInput(location, InputType.LOCATION, _plateau))
@@ -106,7 +106,7 @@ namespace MarsRover
                 if (_startReceived)
                     continue;
 
-                if (_exitReceived)
+                if (exitReceived)
                     ExitApplication();
 
                 //first input values to add rover's properties
@@ -125,9 +125,9 @@ namespace MarsRover
                     directives = _console.ReadLine();
 
                     _startReceived = Checkers.CheckIfUserWantsToStart(directives);
-                    _exitReceived = Checkers.CheckIfUserWantsToExit(directives);
+                    exitReceived = Checkers.CheckIfUserWantsToExit(directives);
 
-                    if (_startReceived || _exitReceived)
+                    if (_startReceived || exitReceived)
                         break;
 
                     if(!Checkers.CheckInput(directives, InputType.DIRECTIVE))
@@ -137,7 +137,7 @@ namespace MarsRover
                 if (_startReceived)
                     continue;
 
-                if (_exitReceived)
+                if (exitReceived)
                     ExitApplication();
 
                 _rovers.Add(new Rover()
