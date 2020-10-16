@@ -1,5 +1,7 @@
-﻿using MarsRover.Models;
+﻿using MarsRover.Log;
+using MarsRover.Models;
 using MarsRover.Utils;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 
@@ -10,6 +12,8 @@ namespace MarsRover
     /// </summary>
     public class Processes
     {
+        private IConsole _console;
+
         List<Rover> _rovers;
 
         //if user wants to start moving rovers
@@ -18,9 +22,11 @@ namespace MarsRover
         //if user wants to exit application
         private bool _exitReceived = false;
 
-        public Processes()
+        public Processes(ServiceProvider serviceProvider)
         {
             _rovers = new List<Rover>();
+            _console = serviceProvider.GetRequiredService<IConsole>();
+            
         }
 
         public void Init()
@@ -50,6 +56,7 @@ namespace MarsRover
                 while (!Checkers.CheckInput(location, InputType.LOCATION))
                 {
                     location = Console.ReadLine();
+                    //location = _console.ReadLine();
 
                     _startReceived = Checkers.CheckIfUserWantsToStart(location);
                     _exitReceived = Checkers.CheckIfUserWantsToExit(location);
@@ -66,6 +73,7 @@ namespace MarsRover
 
                 //first input values to add rover's properties
                 List<string> locationValues = Parsers.ParseLocationForRover(location);
+                //List<string> locationValues = location.ParseLocation();
 
                 string directives = "";
 
@@ -74,6 +82,7 @@ namespace MarsRover
                 {
                     //second input value to add rover's properties
                     directives = Console.ReadLine();
+                    //directives = _console.ReadLine();
 
                     _startReceived = Checkers.CheckIfUserWantsToStart(directives);
                     _exitReceived = Checkers.CheckIfUserWantsToExit(directives);
@@ -97,6 +106,7 @@ namespace MarsRover
                 });
 
                 Console.WriteLine($"** Rover added at '{Convert.ToInt32(locationValues[0])} {Convert.ToInt32(locationValues[1])} {locationValues[2]}' with directives : '{directives}'");
+                //_console.WritelineToConsole($"** Rover added at '{Convert.ToInt32(locationValues[0])} {Convert.ToInt32(locationValues[1])} {locationValues[2]}' with directives : '{directives}'");
             }
         }
 
@@ -112,6 +122,7 @@ namespace MarsRover
                 foreach (var rover in _rovers)
                 {
                     char[] directives = Parsers.ParseDirectivesForRover(rover.Directives);
+                    //char[] directives = rover.Directives.ParseDirectives();
 
                     foreach (var directive in directives)
                     {
@@ -123,9 +134,15 @@ namespace MarsRover
             else //if list has no valid rover.
             {
                 Console.WriteLine("You have no rovers with valid values. Please hit 'Enter' to start again.");
+                //_console.WritelineToConsole("You have no rovers with valid values. Please hit 'Enter' to start again.");
+                
                 while (Console.ReadKey().Key != ConsoleKey.Enter)
                 { }
+                //while (_console.ReadKey().Key != ConsoleKey.Enter)
+                //{ }
+
                 Console.Clear();
+                //_console.ClearConsole();
                 _startReceived = false;
                 Init();
             }
@@ -139,6 +156,7 @@ namespace MarsRover
             if (_rovers.Count > 0)
             {
                 Console.WriteLine("\nOutput:\n");
+                //_console.WritelineToConsole("\nOutput:\n");
 
                 int i = 1;
 
@@ -147,10 +165,12 @@ namespace MarsRover
                     if (rover.CoordinateX < 0 || rover.CoordinateY < 0)
                     {
                         Console.WriteLine($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}  <-- Probably crashed.. Not enough information on documentation.");
+                        //_console.WritelineToConsole($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}  <-- Probably crashed.. Not enough information on documentation.");
                     }
                     else
                     {
                         Console.WriteLine($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}");
+                        //_console.WritelineToConsole($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}");
                     }
 
                     i++;
@@ -230,6 +250,10 @@ namespace MarsRover
         /// </summary>
         private void ExitApplication()
         {
+            //_console.WritelineToConsole("You are not exiting from application. Press any key..");
+            //_console.ReadKey();
+            //_console.ExitConsole();
+
             Console.WriteLine("You are not exiting from application. Press any key..");
             Console.ReadKey();
             Environment.Exit(0);
