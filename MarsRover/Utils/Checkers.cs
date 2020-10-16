@@ -68,7 +68,7 @@ namespace MarsRover.Utils
                 {
                     string[] distanceValuesAsStr = input.Split(" ");
 
-                    if (Convert.ToInt32(distanceValuesAsStr[0]) < 0 || Convert.ToInt32(distanceValuesAsStr[1]) < 0 ||distanceValuesAsStr.Length>2)
+                    if (distanceValuesAsStr.Length > 2 || Convert.ToInt32(distanceValuesAsStr[0]) < 0 || Convert.ToInt32(distanceValuesAsStr[1]) < 0)
                     {
                         return false;
                     }

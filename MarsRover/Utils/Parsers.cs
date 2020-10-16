@@ -32,11 +32,11 @@ namespace MarsRover.Utils
         /// <summary>
         /// To parse max X-Y coordinates for plateau.
         /// </summary>
-        /// <param name="distance">distance string</param>
+        /// <param name="distanceStr">distance string</param>
         /// <returns>returns plateau coordinates with X at first , Y at second element</returns>
-        public static List<int> ParseDistancesForPlateau(string distance)
+        public static List<int> ParseDistancesForPlateau(string distanceStr)
         {
-            string[] values = distance.Split(" ").ToArray();
+            string[] values = distanceStr.Split(" ").ToArray();
 
             List<int> retValues = new List<int>();
 

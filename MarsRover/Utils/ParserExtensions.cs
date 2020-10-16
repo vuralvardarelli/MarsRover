@@ -15,5 +15,19 @@ namespace MarsRover.Utils
         {
             return directives.ToCharArray();
         }
+
+        public static List<int> ParseDistances(this string distanceStr)
+        {
+            string[] values = distanceStr.Split(" ").ToArray();
+
+            List<int> retValues = new List<int>();
+
+            foreach (var value in values)
+            {
+                retValues.Add(Convert.ToInt32(value));
+            }
+
+            return retValues;
+        }
     }
 }
