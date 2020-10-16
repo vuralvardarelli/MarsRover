@@ -102,5 +102,21 @@ namespace MarsRover.Utils
                 return true;
             return false;
         }
+
+        /// <summary>
+        /// To check if rover is out of boundries
+        /// </summary>
+        /// <param name="rover">current rover</param>
+        /// <param name="plateau">plateau with max distance values</param>
+        /// <returns>true if valid, false if not.</returns>
+        public static bool CheckIfRoverOutOfBoundries(Rover rover,Plateau plateau)
+        {
+            if(rover.CoordinateX < 0 || rover.CoordinateY < 0 || rover.CoordinateX > plateau.DistanceX || rover.CoordinateY > plateau.DistanceY)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

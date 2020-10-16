@@ -20,9 +20,6 @@ namespace MarsRover
             console.WritelineToConsole("Welcome to Mars Rover Project");
             console.WritelineToConsole("\n");
             console.WritelineToConsole("Please type your inputs and hit 'Enter' for each.");
-            console.WritelineToConsole("** If you want to move Rovers , please type 'start' as a new input value and hit 'Enter'.");
-            console.WritelineToConsole("** If you want to close application , please type 'exit' as a new input value and hit 'Enter'.\n");
-            console.WritelineToConsole("Inputs :\n");
 
             //initializing class
             Processes processes = new Processes(console);

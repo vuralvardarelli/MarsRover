@@ -19,6 +19,9 @@ namespace MarsRover
         //if user wants to start moving rovers
         private bool _startReceived = false;
 
+        //if user wants to exit application
+        private bool _exitReceived = false;
+
         public Processes(IConsole console)
         {
             _rovers = new List<Rover>();
@@ -51,12 +54,16 @@ namespace MarsRover
         /// </summary>
         private void AddRovers()
         {
-            //if user wants to exit application
-            bool exitReceived = false;
+            _console.WritelineToConsole("\n");
+            _console.WritelineToConsole("** If you want to move Rovers , please type 'start' as a new input value and hit 'Enter'.");
+            _console.WritelineToConsole("** If you want to close application , please type 'exit' as a new input value and hit 'Enter'.\n");
+            
 
             while (!_startReceived)
             {
                 string location = "";
+
+                _console.WritelineToConsole($"{_rovers.Count+1}.Rover's Starting Location Coordinates :\n");
 
                 //try until get first input is valid and location for the rover
                 while (!Checkers.CheckInput(location, InputType.LOCATION))
@@ -64,16 +71,16 @@ namespace MarsRover
                     location = _console.ReadLine();
 
                     _startReceived = Checkers.CheckIfUserWantsToStart(location);
-                    exitReceived = Checkers.CheckIfUserWantsToExit(location);
+                    _exitReceived = Checkers.CheckIfUserWantsToExit(location);
 
-                    if (_startReceived || exitReceived)
+                    if (_startReceived || _exitReceived)
                         break;
                 }
 
                 if (_startReceived)
                     continue;
 
-                if (exitReceived)
+                if (_exitReceived)
                     ExitApplication();
 
                 //first input values to add rover's properties
@@ -82,6 +89,9 @@ namespace MarsRover
 
                 string directives = "";
 
+                _console.WritelineToConsole($"\n" +
+                    $"{_rovers.Count+1}.Rover's Directives :\n");
+
                 //try until get second input is valid and directives for the rover
                 while (!Checkers.CheckInput(directives, InputType.DIRECTIVE))
                 {
@@ -89,16 +99,16 @@ namespace MarsRover
                     directives = _console.ReadLine();
 
                     _startReceived = Checkers.CheckIfUserWantsToStart(directives);
-                    exitReceived = Checkers.CheckIfUserWantsToExit(directives);
+                    _exitReceived = Checkers.CheckIfUserWantsToExit(directives);
 
-                    if (_startReceived || exitReceived)
+                    if (_startReceived || _exitReceived)
                         break;
                 }
 
                 if (_startReceived)
                     continue;
 
-                if (exitReceived)
+                if (_exitReceived)
                     ExitApplication();
 
                 _rovers.Add(new Rover()
@@ -109,7 +119,7 @@ namespace MarsRover
                     Directives = directives
                 });
 
-                _console.WritelineToConsole($"** Rover added at '{Convert.ToInt32(locationValues[0])} {Convert.ToInt32(locationValues[1])} {locationValues[2]}' with directives : '{directives}'");
+                _console.WritelineToConsole($"\n** {_rovers.Count}.Rover added at '{Convert.ToInt32(locationValues[0])} {Convert.ToInt32(locationValues[1])} {locationValues[2]}' with directives : '{directives}'\n");
             }
         }
 
