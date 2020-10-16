@@ -205,7 +205,7 @@ namespace MarsRover
                 {
                     if (rover.CoordinateX < 0 || rover.CoordinateY < 0 || rover.CoordinateX > _plateau.DistanceX ||rover.CoordinateY > _plateau.DistanceY)
                     {
-                        _console.WritelineToConsole($"**OUT OF BOUNDRIES** {i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction}");
+                        _console.WritelineToConsole($"{i}.Rover : {rover.CoordinateX} {rover.CoordinateY} {rover.Direction} **OUT OF BOUNDRIES (Max Values : {_plateau.DistanceX} {_plateau.DistanceY})**");
                     }
                     else
                     {
