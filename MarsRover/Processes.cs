@@ -19,10 +19,10 @@ namespace MarsRover
         //if user wants to start moving rovers
         private bool _startReceived = false;
 
-        public Processes(ServiceProvider serviceProvider)
+        public Processes(IConsole console)
         {
             _rovers = new List<Rover>();
-            _console = serviceProvider.GetRequiredService<IConsole>();
+            _console = console;
 
         }
 
